@@ -1,5 +1,5 @@
 // region types
-import type { IOType } from "./types/io";
+import type { IOType } from "./src/types/io";
 import type { Express } from "express";
 // endregion
 
