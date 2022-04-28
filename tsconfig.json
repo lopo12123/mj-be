@@ -16,6 +16,7 @@
         "baseUrl": "."
     },
     "include": [
+        "custom-attr.d.ts",
         "src/**/*.ts",
         "src/**/*.d.ts"
     ]
