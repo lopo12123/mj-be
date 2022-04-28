@@ -4,8 +4,10 @@ import type { Express } from "express";
 // endregion
 
 // region deps
-// import * as express from "express";
 const express = require("express");
+const cookieParser = require("cookie-parser");
+const expressSession = require("express-session");
+const sharedSession = require("express-socket.io-session");
 import { Server } from "http";
 import { Server as IOServer } from "socket.io";
 import { setupIO } from "./src/io";
@@ -15,17 +17,29 @@ import { setupExpress } from "./src/express";
 // config
 const HOST = '127.0.0.1'
 const PORT = 8899
+const app: Express = express()
+const http = new Server(app)
+const io: IOType = new IOServer(http, { cors: { origin: '*' } })
 // endregion
 
 // middleware
-const app: Express = express()
-const http = new Server(app)
-const io: IOType = new IOServer(http)
+const sessionConfig = expressSession({
+    name: 'sessionId',
+    secret: 'salt',
+    cookie: {
+        maxAge: 5 * 60 * 1000  // 5min
+    },
+    resave: false,
+    saveUninitialized: false
+})
+app.use(cookieParser())
+app.use(sessionConfig)
+io.use(sharedSession(sessionConfig, { autoSave: true }))
 // endregion
 
 // region bind event
-setupIO(io)
 setupExpress(app)
+setupIO(io)
 // endregion
 
 // region start

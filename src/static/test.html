@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+        <button onclick="ping()">ping</button>
+
+        <button id="ioBtn">io</button>
+
+        <script>
+            const ping = () => {
+                fetch('/ping', {credentials: 'include'})
+                    .then((res) => {
+                        return res.json()
+                    })
+                    .then((body) => {
+                        console.log(body)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
+        </script>
+
+        <script type="module">
+            import {io} from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+
+            document.getElementById('ioBtn').onclick = () => {
+                const socket = io("http://127.0.0.1:8899", {
+                    withCredentials: true
+                });
+
+                socket.on('connect', () => {
+                    console.log('connect: ', socket.id)
+                })
+
+                socket.on("disconnect", () => {
+                    console.log('disconnect: ', socket.id); // undefined
+                });
+            }
+        </script>
+    </body>
+</html>
