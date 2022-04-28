@@ -6,7 +6,6 @@
     "author": "lopo",
     "license": "MIT",
     "scripts": {
-        "dev": "ts-node index.ts",
         "dev:hot": "nodemon index.ts"
     },
     "dependencies": {
