@@ -10,12 +10,6 @@
     <body>
         <button onclick="ping()">ping</button>
 
-        <button onclick="newRoom()">new room</button>
-
-        <button id="ioOpen">connect</button>
-
-        <button id="ioClose">disconnect</button>
-
         <script>
             const ping = () => {
                 fetch('/ping', {credentials: 'include'})
@@ -28,52 +22,6 @@
                     .catch((err) => {
                         console.log(err)
                     })
-            }
-
-            const newRoom = () => {
-                fetch('./new-room')
-                    .then((res) => {
-                        return res.json()
-                    })
-                    .then((res) => {
-                        console.log(res)
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-            }
-        </script>
-
-        <script type="module">
-            import {io} from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-
-            const socketPool = []
-
-            document.getElementById('ioOpen').onclick = () => {
-                // socket?.disconnect()
-                const socket = io("http://127.0.0.1:8899", {
-                    withCredentials: true,
-                    query: {
-                        roomId: 'room-123'
-                    }
-                });
-
-                socketPool.push(socket)
-
-                socket.on('connect', () => {
-                    console.log('connect: ', socket.id)
-                })
-
-                socket.on("disconnect", () => {
-                    console.log('disconnect: ', socket.id); // undefined
-                });
-            }
-
-            document.getElementById('ioClose').onclick = () => {
-                if (socketPool[0]) {
-                    socketPool[0]?.disconnect()
-                    socketPool.shift()
-                }
             }
         </script>
     </body>
