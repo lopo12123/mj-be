@@ -5,9 +5,13 @@ import { useClientStore } from "../stores/clientStore";
 
 // region 统计并打印当前socket数量
 const countSocket = (io: IOType) => {
-    io.allSockets().then((all) => {
-        Logger(`当前socket连接数: ${ all.size }`, 'socket count')
-    })
+    io.allSockets()
+        .then((all) => {
+            Logger(`当前socket连接数: ${ all.size }`, 'async')
+        })
+        .catch((err) => {
+            Logger(err.toString(), 'Error')
+        })
 }
 // endregion
 
@@ -20,8 +24,14 @@ const countSocket = (io: IOType) => {
 const setDisconnectLog = (socket: SocketType, slotFn?: () => void) => {
     socket.on('disconnecting', () => {
         const client_id = parseCookie(socket.request.headers.cookie ?? '').clientId
+
+        // 将此client的id从存储中删去
         useClientStore().kill(client_id)
+        // 将此client从其房间中移除
+        // todo
+
         Logger('正在断开连接', `clientId= ${ client_id }`)
+
         socket.on('disconnect', () => {
             Logger('已断开连接', `clientId= ${ client_id }`)
 
@@ -36,7 +46,9 @@ const setupIO = (io: IOType) => {
     io.on('connection', (socket) => {
         countSocket(io)
 
-        setDisconnectLog(socket, () => countSocket(io))
+        setDisconnectLog(socket, () => {
+            countSocket(io)
+        })
     })
 }
 
