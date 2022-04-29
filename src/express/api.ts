@@ -4,7 +4,7 @@ import { Logger } from "../scripts/Logger";
 
 const apiRouter = Router()
 
-// region 请求一个新的room
+// region 新建一个room, 并返回roomId
 apiRouter.get('/new-room', (req, res) => {
     const newRoomId = useRoomStore().newRoom(req.cookies.clientId)
 
