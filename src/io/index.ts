@@ -2,6 +2,7 @@ import { IOType, SocketType } from "../types/io";
 import { Logger } from "../scripts/Logger";
 import { parseCookie } from "../stores/cookieStore";
 import { useClientStore } from "../stores/clientStore";
+import { useRoomStore } from "../stores/roomStore";
 
 // region 统计并打印当前socket数量
 const countSocket = (io: IOType) => {
@@ -23,17 +24,17 @@ const countSocket = (io: IOType) => {
  */
 const setDisconnectLog = (socket: SocketType, slotFn?: () => void) => {
     socket.on('disconnecting', () => {
-        const client_id = parseCookie(socket.request.headers.cookie ?? '').clientId
+        const cookies = parseCookie(socket.request.headers.cookie ?? '')
 
         // 将此client的id从存储中删去
-        useClientStore().kill(client_id)
+        useClientStore().kill(cookies.clientId)
         // 将此client从其房间中移除
-        // todo
+        useRoomStore().getRoom(cookies.roomId)?.remove(cookies.clientId)
 
-        Logger('正在断开连接', `clientId= ${ client_id }`)
+        Logger('正在断开连接', `clientId= ${ cookies.clientId }`)
 
         socket.on('disconnect', () => {
-            Logger('已断开连接', `clientId= ${ client_id }`)
+            Logger('已断开连接', `clientId= ${ cookies.clientId }`)
 
             slotFn?.()
         })
