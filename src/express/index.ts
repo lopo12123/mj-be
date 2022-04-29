@@ -9,7 +9,8 @@ const setupExpress = (ex: Express) => {
     // region 设置请求头 允许跨域
     ex.all('*', (req, res, next) => {
         res.header('Access-Control-Allow-Origin', req.hostname)
-        res.cookie('SESSIONID', (req.cookies.SESSIONID ?? v4()), { maxAge: session_timeout })
+        // todo 移动到 get('/') 请求中 (即只在进入页面时设置一次)
+        res.cookie('clientId', (req.cookies.clientId ?? v4()), { httpOnly: true })
         next()
     })
     // endregion
