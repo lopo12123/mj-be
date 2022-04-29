@@ -16,7 +16,7 @@
         "baseUrl": "."
     },
     "include": [
-        "custom-attr.d.ts",
+        "src/merge.d.ts",
         "src/**/*.ts",
         "src/**/*.d.ts"
     ]
