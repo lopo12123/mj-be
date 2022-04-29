@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { useRoomStore } from "../stores/roomStore";
+import { Logger } from "../scripts/Logger";
 
 const apiRouter = Router()
 
 // region 请求一个新的room
 apiRouter.get('/new-room', (req, res) => {
-    const newRoomId = useRoomStore().newRoom()
-    res.cookie('room-id', newRoomId)
-        .json({ roomId: newRoomId })
+    const newRoomId = useRoomStore().newRoom(req.cookies.clientId)
+
+    Logger(`新增房间 [${ newRoomId }], 当前房间数: ${ useRoomStore().count() }`, `clientId= ${req.cookies.clientId}`)
+    res.json({ roomId: newRoomId })
 })
 // endregion
-
 
 export default apiRouter
