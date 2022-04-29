@@ -19,7 +19,7 @@ const HOST = '127.0.0.1'
 const PORT = 8899
 const app: Express = express()
 const http = new Server(app)
-const io: IOType = new IOServer(http, { cors: { origin: '*' } })
+const io: IOType = new IOServer(http, { cors: { origin: 'http://localhost:3000', credentials: true } })
 // endregion
 
 // middleware
@@ -27,7 +27,7 @@ const sessionConfig = expressSession({
     name: 'sessionId',
     secret: 'salt',
     cookie: {
-        maxAge: 5 * 60 * 1000  // 5min
+        maxAge: 60 * 60 * 1000  // 60min
     },
     resave: false,
     saveUninitialized: false
