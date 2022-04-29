@@ -34,6 +34,8 @@ class SingleRoom {
     remove(clientId: string) {
         const index = this.clients.findIndex((client) => client === clientId)
         if(index !== -1) this.clients.splice(index, 1)
+
+        roomStore.auto_clean()
     }
 }
 
@@ -43,7 +45,7 @@ class RoomStore {
     /**
      * @description 自动清理没有client的room
      */
-    private auto_clean() {
+    auto_clean() {
         for (let [ k, v ] of this.roomList) {
             if(v.count() === 0) this.roomList.delete(k)
         }
