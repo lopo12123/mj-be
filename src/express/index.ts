@@ -7,17 +7,11 @@ const setupExpress = (ex: Express) => {
         next()
     })
     ex.get('/', (req, res) => {
-        // @ts-ignore
-        req.session.views = (req.session.views ?? 0) + 1
         res.sendFile(path.resolve(__dirname, '../static/test.html'))
     })
 
     ex.get('/ping', (req, res) => {
-        // @ts-ignore
-        req.session.views = (req.session.views ?? 0) + 1
-        // console.log(req.session, req.cookies)
-        // @ts-ignore
-        res.json({ msg: 'pong', views: req.session.views })
+        res.json({ msg: 'pong' })
     })
 }
 
