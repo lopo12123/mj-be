@@ -6,7 +6,7 @@
     "author": "lopo",
     "license": "MIT",
     "scripts": {
-        "dev:hot": "nodemon index.ts"
+        "dev:be": "nodemon index.ts"
     },
     "dependencies": {
         "cookie-parser": "^1.4.6",
