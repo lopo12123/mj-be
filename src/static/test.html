@@ -18,7 +18,10 @@
 
         <script>
             const ping = () => {
-                fetch('/ping', {credentials: 'include'}).then(x => x.json())
+                fetch('/ping', {credentials: 'include'})
+                    .then((res) => {
+                        return res.json()
+                    })
                     .then((body) => {
                         console.log(body)
                     })
@@ -28,7 +31,10 @@
             }
 
             const newRoom = () => {
-                fetch('./new-room').then(x => x.json())
+                fetch('./new-room')
+                    .then((res) => {
+                        return res.json()
+                    })
                     .then((res) => {
                         console.log(res)
                     })
