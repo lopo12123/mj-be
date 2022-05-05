@@ -47,9 +47,21 @@ const setupIO = (io: IOType) => {
     io.on('connection', (socket) => {
         countSocket(io)
 
+
+        // region [request-disconnect] c端请求断开连接 - s端主动断开
+        socket.on('request-disconnect', () => {
+            const cookies = parseCookie(socket.request.headers.cookie ?? '')
+            Logger('正在断开连接', `clientId= ${ cookies.clientId }`)
+            socket.disconnect(true)
+            Logger('已断开连接', `clientId= ${ cookies.clientId }`)
+        })
+        // endregion
+
+        // region 刷新、关闭页面 等方式直接断开连接
         setDisconnectLog(socket, () => {
             countSocket(io)
         })
+        // endregion
     })
 }
 
