@@ -62,7 +62,7 @@ interface Server2Client {
  * socket.emit('hello')
  */
 interface Client2Server {
-
+    'request-disconnect': () => void
 }
 
 /**
@@ -78,7 +78,6 @@ interface Client2Server {
  * })
  */
 interface InterServerEvents {
-
 }
 
 /**
